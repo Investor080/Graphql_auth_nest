@@ -6,6 +6,5 @@ export class User {
     id: number;
     @Field()
     username: String;
-    @Field()
-    email: String;
+    
 }

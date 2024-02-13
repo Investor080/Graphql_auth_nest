@@ -23,8 +23,8 @@ type Query {
 }
 
 input SignInInput {
-  email: String!
   password: String!
+  username: String!
 }
 
 type SignResponse {
@@ -34,20 +34,17 @@ type SignResponse {
 }
 
 input SignUpInput {
-  email: String!
   password: String!
   username: String!
 }
 
 input UpdateAuthInput {
-  email: String
   id: Int!
   password: String
   username: String
 }
 
 type User {
-  email: String!
   id: Int!
   username: String!
 }

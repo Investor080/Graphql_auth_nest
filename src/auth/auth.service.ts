@@ -19,12 +19,12 @@ export class AuthService {
       data:{
         username:signUpInput.username.toString(),
         hashedpassword: hashedPassword,
-        email:signUpInput.email.toString()
+        
       },
     });
     const { accessToken, refreshToken } = await this.createTokens(
       user.id,
-      user.email
+      
     );
     await this.updateRefreshToken(user.id, refreshToken);
     return { accessToken, refreshToken, user }
@@ -33,7 +33,7 @@ export class AuthService {
 
   async signin(signInInput:SignInInput) {
     const user = await this.prisma.user.findUnique({
-      where:{email:signInInput.email.toString()},
+      where:{username:signInInput.username.toString()},
     });
     if(!user) {
       throw new ForbiddenException('Access Denied')
@@ -42,7 +42,7 @@ export class AuthService {
     if(!doPasswordMatch) {
       throw new ForbiddenException('Access Denied')
     }
-    const { accessToken, refreshToken } = await this.createTokens(user.id, user.email)
+    const { accessToken, refreshToken } = await this.createTokens(user.id)
     await this.updateRefreshToken(user.id, refreshToken)
     return {accessToken, refreshToken, user}
   }
@@ -59,14 +59,13 @@ export class AuthService {
     return `This action removes a #${id} auth`;
   }
 
-  async createTokens(userId: number, email: string) {
+  async createTokens(userId: number) {
     const accessToken = this.jwtService.sign({
       userId,
-      email,
+      
     }, {expiresIn: "10s", secret:this.configService.get('ACCESS_TOKEN_SECRET')});
     const refreshToken = this.jwtService.sign({
       userId,
-      email,
       accessToken,
     }, { expiresIn: "7d", secret:this.configService.get('REFRESH_TOKEN_SECRET') })
     return { accessToken, refreshToken };
