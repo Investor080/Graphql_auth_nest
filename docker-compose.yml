@@ -1,0 +1,14 @@
+services:
+  captured-memories:
+    container_name: nestjs_graphql_prisma
+    image: postgres:13 #this can be replace with the stanard postgres image if not on arm
+    network_mode: bridge
+    ports:
+      - "5432:5432"
+    restart: always
+    
+    environment:
+      - POSTGRES_DB=nestjs_graphql_prisma
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123
+      
