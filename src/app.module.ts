@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
@@ -6,6 +6,10 @@ import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
+// import { AppController } from './app.controller';
+// import { AppService } from './app.service';
+import * as csurf from 'csurf';
+import * as cookieParser from 'cookie-parser';
 
 @Module({
   imports: [
@@ -19,4 +23,10 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [],
   providers: [PrismaService],
 })
-export class AppModule {}
+export class AppModule implements NestModule{
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(cookieParser(), csurf({ cookie: true }))
+      .forRoutes('*');
+  }
+}
