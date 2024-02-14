@@ -6,8 +6,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import * as csurf from 'csurf';
-import * as cookieParser from 'cookie-parser';
+
 
 @Module({
   imports: [
@@ -21,10 +20,4 @@ import * as cookieParser from 'cookie-parser';
   controllers: [],
   providers: [PrismaService],
 })
-export class AppModule implements NestModule{
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(cookieParser(), csurf({ cookie: true }))
-      .forRoutes('*');
-  }
-}
+export class AppModule{}
