@@ -6,6 +6,10 @@ import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { StudentModule } from './student/student.module';
+import { PartnerModule } from './partner/partner.module';
+import { InstructorResolver } from './instructor/instructor.resolver';
+import { InstructorModule } from './instructor/instructor.module';
 
 
 @Module({
@@ -15,9 +19,9 @@ import { ConfigModule } from '@nestjs/config';
     driver: ApolloDriver,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     sortSchema: true,
-  }), AuthModule, UserModule,
+  }), AuthModule, UserModule, StudentModule, PartnerModule, InstructorModule,
   ],
   controllers: [],
-  providers: [PrismaService],
+  providers: [PrismaService, InstructorResolver],
 })
 export class AppModule{}
